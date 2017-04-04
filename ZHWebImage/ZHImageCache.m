@@ -171,5 +171,37 @@ static ZHImageCache *imageChace=nil;
         [wkself.queue removeObjectForKey:url];
     }];
 }
-
+-(void)clearMemory{
+    
+    [self.cache removeAllObjects];
+}
+-(void)clearDisk{
+    
+    NSString *diskPath=cachePath();
+    NSArray *array=[[NSFileManager defaultManager] contentsOfDirectoryAtPath:diskPath error:nil];
+    if (array.count==0||!array) {
+        
+        return;
+    }
+    for (NSString *name in array) {
+        
+        NSString *filePath=[NSString stringWithFormat:@"%@%@",diskPath,name];
+        [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
+    }
+}
+-(NSUInteger)cacheSize{
+    
+    NSUInteger size=0;
+    NSString *diskPath=cachePath();
+    NSArray *array=[[NSFileManager defaultManager] contentsOfDirectoryAtPath:diskPath error:nil];
+    
+    for (NSString *name in array) {
+        
+        NSString *filePath=[NSString stringWithFormat:@"%@%@",diskPath,name];
+        NSDictionary *attributes=[[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
+        NSString *fileSize=[attributes objectForKey:NSFileSize];
+        size+=[fileSize integerValue];
+    }
+    return size;
+}
 @end

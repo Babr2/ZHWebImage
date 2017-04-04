@@ -15,4 +15,18 @@
 
 -(void)imageWithUrl:(NSString *)url completion:(void(^)(UIImage *image))competionHanlder;
 
+/**
+ 清内存缓存
+ */
+-(void)clearMemory;
+
+/**
+ 清理磁盘
+ */
+-(void)clearDisk;
+
+/**
+ 计算缓存大小，单位：字节
+ */
+-(NSUInteger)cacheSize;
 @end
